@@ -65,8 +65,8 @@ export class MemStorage implements IStorage {
     };
     this.environmentalDataList.set(envData.id, envData);
 
-    // Initialize recommendations
-    const recommendations: Omit<Recommendation, 'id'>[] = [
+    // Initialize recommendations with more diverse options
+    const recommendations: Omit<Recommendation, 'id' | 'createdAt'>[] = [
       {
         title: "Cold Beverages & Ice",
         description: "Recommended due to high temperature (78°F)",
@@ -79,7 +79,6 @@ export class MemStorage implements IStorage {
         timeSensitivity: "Next 4 hours",
         imageUrl: "https://images.unsplash.com/photo-1622543925917-763c34d1a86e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200",
         isActive: true,
-        createdAt: now,
       },
       {
         title: "Summer Accessories",
@@ -93,7 +92,6 @@ export class MemStorage implements IStorage {
         timeSensitivity: "This week",
         imageUrl: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200",
         isActive: true,
-        createdAt: now,
       },
       {
         title: "4th of July Prep",
@@ -107,12 +105,56 @@ export class MemStorage implements IStorage {
         timeSensitivity: "Urgent",
         imageUrl: "https://images.unsplash.com/photo-1530841344095-36d6e3a8cf66?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200",
         isActive: true,
-        createdAt: now,
+      },
+      {
+        title: "Air Conditioners & Fans",
+        description: "Temperature trending upward, cooling demand high",
+        category: "Electronics",
+        priority: "high",
+        score: 88,
+        expectedImpact: 3200,
+        suggestedPlacement: "Electronics section entrance",
+        inventoryImpact: "+95% demand",
+        timeSensitivity: "Next 2 hours",
+        imageUrl: "https://images.unsplash.com/photo-1628566470685-7b1c35bb3db1?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200",
+        isActive: true,
+      },
+      {
+        title: "Sunscreen & Summer Care",
+        description: "High UV index expected this week",
+        category: "Health & Beauty",
+        priority: "medium",
+        score: 73,
+        expectedImpact: 1500,
+        suggestedPlacement: "Health & beauty endcap",
+        inventoryImpact: "+55% demand",
+        timeSensitivity: "Today",
+        imageUrl: "https://images.unsplash.com/photo-1556909114-46b3ad9d4ba7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200",
+        isActive: true,
+      },
+      {
+        title: "Pool & Beach Supplies",
+        description: "Weekend weather forecast shows perfect pool conditions",
+        category: "Seasonal",
+        priority: "medium",
+        score: 79,
+        expectedImpact: 2100,
+        suggestedPlacement: "Seasonal display center",
+        inventoryImpact: "+70% demand",
+        timeSensitivity: "Next 24 hours",
+        imageUrl: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200",
+        isActive: true,
       },
     ];
 
     recommendations.forEach(rec => {
-      const recommendation: Recommendation = { ...rec, id: this.currentRecId++ };
+      const recommendation: Recommendation = { 
+        ...rec, 
+        id: this.currentRecId++,
+        createdAt: now,
+        imageUrl: rec.imageUrl || null,
+        isActive: rec.isActive || true
+      };
       this.recommendationsList.set(recommendation.id, recommendation);
     });
 
