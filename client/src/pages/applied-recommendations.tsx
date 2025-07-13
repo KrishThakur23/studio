@@ -40,21 +40,34 @@ export default function AppliedRecommendations() {
     },
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: async (id: number) => {
-      return apiRequest(`/api/recommendations/${id}`, {
-        method: "DELETE",
+  const handleDeleteRecommendation = async (id: number) => {
+    try {
+      const response = await fetch(`/api/recommendations/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/recommendations"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/recommendations/all"] });
+
+      if (response.ok) {
+        queryClient.invalidateQueries({ queryKey: ["/api/recommendations"] });
+        queryClient.invalidateQueries({ queryKey: ["/api/recommendations/all"] });
+        toast({
+          title: "Recommendation Deleted",
+          description: "The recommendation has been permanently removed.",
+        });
+      } else {
+        throw new Error('Delete failed');
+      }
+    } catch (error) {
+      console.error("Delete error:", error);
       toast({
-        title: "Recommendation Deleted",
-        description: "The recommendation has been permanently removed.",
+        title: "Delete Failed",
+        description: "Failed to delete recommendation. Please try again.",
+        variant: "destructive",
       });
-    },
-  });
+    }
+  };
 
   const formatDate = (date: Date) => {
     return new Date(date).toLocaleDateString('en-US', {
@@ -124,14 +137,6 @@ export default function AppliedRecommendations() {
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
-                        {recommendation.imageUrl && (
-                          <img 
-                            src={recommendation.imageUrl} 
-                            alt={recommendation.title}
-                            className="w-full h-32 rounded-lg object-cover" 
-                          />
-                        )}
-                        
                         <p className="text-sm text-gray-600">{recommendation.description}</p>
                         
                         <div className="space-y-2 text-sm">
@@ -177,8 +182,7 @@ export default function AppliedRecommendations() {
                               Reactivate
                             </Button>
                             <Button 
-                              onClick={() => deleteMutation.mutate(recommendation.id)}
-                              disabled={deleteMutation.isPending}
+                              onClick={() => handleDeleteRecommendation(recommendation.id)}
                               variant="outline"
                               size="sm"
                               className="text-red-600 border-red-200 hover:bg-red-50"
