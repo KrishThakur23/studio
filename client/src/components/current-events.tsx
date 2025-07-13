@@ -20,6 +20,7 @@ export default function CurrentEvents() {
       iconColor: "text-green-600",
       items: [
         { name: "MLB Season", date: "Ongoing", impact: "Snacks & Beverages", urgency: "medium" },
+        { name: "Cricket Fever", date: "Peak Season", impact: "Jersey T-Shirts", urgency: "high" },
         { name: "Summer Olympics Prep", date: "Upcoming", impact: "Sports Equipment", urgency: "low" },
       ]
     },

@@ -78,7 +78,7 @@ export class MemStorage implements IStorage {
         suggestedPlacement: "Front entrance display",
         inventoryImpact: "+85% demand",
         timeSensitivity: "Next 4 hours",
-        imageUrl: "https://images.unsplash.com/photo-1622543925917-763c34d1a86e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200",
+        imageUrl: "https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200",
         isActive: true,
       },
       {
@@ -91,7 +91,7 @@ export class MemStorage implements IStorage {
         suggestedPlacement: "Seasonal end cap",
         inventoryImpact: "+45% demand",
         timeSensitivity: "This week",
-        imageUrl: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200",
+        imageUrl: "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200",
         isActive: true,
       },
       {
@@ -117,7 +117,7 @@ export class MemStorage implements IStorage {
         suggestedPlacement: "Electronics section entrance",
         inventoryImpact: "+95% demand",
         timeSensitivity: "Next 2 hours",
-        imageUrl: "https://images.unsplash.com/photo-1628566470685-7b1c35bb3db1?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200",
+        imageUrl: "https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200",
         isActive: true,
       },
       {
@@ -143,7 +143,7 @@ export class MemStorage implements IStorage {
         suggestedPlacement: "Seasonal display center",
         inventoryImpact: "+70% demand",
         timeSensitivity: "Next 24 hours",
-        imageUrl: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200",
+        imageUrl: "https://images.unsplash.com/photo-1544966503-7cc536d3387b?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200",
         isActive: true,
       },
       {
@@ -156,7 +156,20 @@ export class MemStorage implements IStorage {
         suggestedPlacement: "Sports section endcap",
         inventoryImpact: "+60% demand",
         timeSensitivity: "Game days",
-        imageUrl: "https://images.unsplash.com/photo-1628294896516-211d5565e8c2?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200",
+        imageUrl: "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200",
+        isActive: true,
+      },
+      {
+        title: "Cricket Jersey T-Shirts",
+        description: "Cricket fever driving high demand for team jerseys and cricket t-shirts",
+        category: "Sports",
+        priority: "high",
+        score: 89,
+        expectedImpact: 2800,
+        suggestedPlacement: "Sports section front display",
+        inventoryImpact: "+120% demand",
+        timeSensitivity: "Peak season",
+        imageUrl: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200",
         isActive: true,
       },
       {
@@ -182,7 +195,7 @@ export class MemStorage implements IStorage {
         suggestedPlacement: "Education aisle entrance",
         inventoryImpact: "+35% demand",
         timeSensitivity: "Next month",
-        imageUrl: "https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200",
+        imageUrl: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200",
         isActive: true,
       },
       {
