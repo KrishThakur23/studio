@@ -26,6 +26,7 @@ export interface IStorage {
   getAllRecommendations(): Promise<Recommendation[]>;
   createRecommendation(recommendation: InsertRecommendation): Promise<Recommendation>;
   updateRecommendation(id: number, updates: Partial<Recommendation>): Promise<Recommendation | undefined>;
+  deleteRecommendation(id: number): Promise<boolean>;
   
   getDemandTrends(hours: number): Promise<DemandTrend[]>;
   createDemandTrend(trend: InsertDemandTrend): Promise<DemandTrend>;
@@ -78,7 +79,7 @@ export class MemStorage implements IStorage {
         suggestedPlacement: "Front entrance display",
         inventoryImpact: "+85% demand",
         timeSensitivity: "Next 4 hours",
-        imageUrl: "https://images.unsplash.com/photo-1594736797933-d0401ba2fe65?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200",
+        imageUrl: null,
         isActive: true,
       },
       {
@@ -91,7 +92,7 @@ export class MemStorage implements IStorage {
         suggestedPlacement: "Seasonal end cap",
         inventoryImpact: "+45% demand",
         timeSensitivity: "This week",
-        imageUrl: "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200",
+        imageUrl: null,
         isActive: true,
       },
       {
@@ -218,7 +219,7 @@ export class MemStorage implements IStorage {
         ...rec, 
         id: this.currentRecId++,
         createdAt: now,
-        imageUrl: rec.imageUrl || null,
+        imageUrl: null,
         isActive: rec.isActive || true
       };
       this.recommendationsList.set(recommendation.id, recommendation);
@@ -317,6 +318,10 @@ export class MemStorage implements IStorage {
     const updated = { ...existing, ...updates };
     this.recommendationsList.set(id, updated);
     return updated;
+  }
+
+  async deleteRecommendation(id: number): Promise<boolean> {
+    return this.recommendationsList.delete(id);
   }
 
   async getDemandTrends(hours: number): Promise<DemandTrend[]> {

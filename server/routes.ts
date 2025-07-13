@@ -82,6 +82,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.delete("/api/recommendations/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid recommendation ID" });
+      }
+      const deleted = await storage.deleteRecommendation(id);
+      if (!deleted) {
+        return res.status(404).json({ message: "Recommendation not found" });
+      }
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete recommendation" });
+    }
+  });
+
   // Demand trends routes
   app.get("/api/trends/:hours", async (req, res) => {
     try {

@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Flame, TrendingUp, Calendar, CheckCircle } from "lucide-react";
+import { Flame, TrendingUp, Calendar, CheckCircle, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 import type { Recommendation } from "@shared/schema";
 
 interface RecommendationCardProps {
@@ -12,6 +14,23 @@ interface RecommendationCardProps {
 export default function RecommendationCard({ recommendation }: RecommendationCardProps) {
   const [isApplied, setIsApplied] = useState(false);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  const deleteMutation = useMutation({
+    mutationFn: async () => {
+      return apiRequest(`/api/recommendations/${recommendation.id}`, {
+        method: "DELETE",
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/recommendations"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/recommendations/all"] });
+      toast({
+        title: "Recommendation Deleted",
+        description: `${recommendation.title} has been removed.`,
+      });
+    },
+  });
 
   const getPriorityConfig = (priority: string) => {
     switch (priority) {
@@ -89,18 +108,9 @@ export default function RecommendationCard({ recommendation }: RecommendationCar
       </div>
       
       <CardContent className="p-6">
-        <div className="flex items-start space-x-4 mb-4">
-          {recommendation.imageUrl && (
-            <img 
-              src={recommendation.imageUrl} 
-              alt={recommendation.title}
-              className="w-16 h-16 rounded-lg object-cover" 
-            />
-          )}
-          <div className="flex-1">
-            <h4 className="font-semibold text-gray-900">{recommendation.title}</h4>
-            <p className="text-sm text-gray-600 mt-1">{recommendation.description}</p>
-          </div>
+        <div className="mb-4">
+          <h4 className="font-semibold text-gray-900">{recommendation.title}</h4>
+          <p className="text-sm text-gray-600 mt-1">{recommendation.description}</p>
         </div>
         
         <div className="space-y-3">
@@ -124,24 +134,34 @@ export default function RecommendationCard({ recommendation }: RecommendationCar
           </div>
         </div>
         
-        <Button 
-          onClick={handleApplyRecommendation}
-          disabled={isApplied}
-          className={`w-full mt-4 transition-colors font-medium ${
-            isApplied 
-              ? 'bg-green-500 hover:bg-green-600' 
-              : 'bg-walmart-blue-500 hover:bg-walmart-blue-600'
-          }`}
-        >
-          {isApplied ? (
-            <>
-              <CheckCircle className="w-4 h-4 mr-2" />
-              Applied
-            </>
-          ) : (
-            'Apply Recommendation'
-          )}
-        </Button>
+        <div className="flex space-x-2 mt-4">
+          <Button 
+            onClick={handleApplyRecommendation}
+            disabled={isApplied}
+            className={`flex-1 transition-colors font-medium ${
+              isApplied 
+                ? 'bg-green-500 hover:bg-green-600' 
+                : 'bg-walmart-blue-500 hover:bg-walmart-blue-600'
+            }`}
+          >
+            {isApplied ? (
+              <>
+                <CheckCircle className="w-4 h-4 mr-2" />
+                Applied
+              </>
+            ) : (
+              'Apply Recommendation'
+            )}
+          </Button>
+          <Button 
+            onClick={() => deleteMutation.mutate()}
+            disabled={deleteMutation.isPending}
+            variant="outline"
+            className="text-red-600 border-red-200 hover:bg-red-50"
+          >
+            <Trash2 className="w-4 h-4" />
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );
