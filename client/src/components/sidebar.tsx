@@ -17,9 +17,9 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className="w-64 bg-walmart-blue-500 text-white flex-shrink-0">
+    <div className="w-64 bg-walmart-blue-500 text-white flex-shrink-0 flex flex-col">
       <div className="p-6">
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 mb-6">
           <div className="w-8 h-8 bg-walmart-yellow-500 rounded-lg flex items-center justify-center">
             <Activity className="text-walmart-blue-500 text-lg w-5 h-5" />
           </div>
@@ -28,9 +28,22 @@ export default function Sidebar() {
             <p className="text-blue-200 text-sm">Store #2847</p>
           </div>
         </div>
+        
+        {/* User Profile at top */}
+        <div className="bg-walmart-blue-600 rounded-lg p-3 mb-2">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 bg-walmart-yellow-500 rounded-full flex items-center justify-center">
+              <span className="text-walmart-blue-500 font-semibold text-sm">JD</span>
+            </div>
+            <div>
+              <p className="font-medium text-sm">John Doe</p>
+              <p className="text-blue-200 text-xs">Store Manager</p>
+            </div>
+          </div>
+        </div>
       </div>
       
-      <nav className="mt-8">
+      <nav className="flex-1">
         {menuItems.map((item, index) => {
           const Icon = item.icon;
           return (
@@ -49,20 +62,6 @@ export default function Sidebar() {
           );
         })}
       </nav>
-      
-      <div className="absolute bottom-4 left-4 right-4">
-        <div className="bg-walmart-blue-600 rounded-lg p-4">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-walmart-yellow-500 rounded-full flex items-center justify-center">
-              <span className="text-walmart-blue-500 font-semibold">JD</span>
-            </div>
-            <div>
-              <p className="font-medium">John Doe</p>
-              <p className="text-blue-200 text-sm">Store Manager</p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
