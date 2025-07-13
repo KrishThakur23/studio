@@ -1,10 +1,17 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle, Clock, TrendingUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { CheckCircle, Clock, TrendingUp, Trash2, RotateCcw } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
 import Sidebar from "@/components/sidebar";
 import type { Recommendation } from "@shared/schema";
 
 export default function AppliedRecommendations() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  
   const { data: allRecommendations = [] } = useQuery<Recommendation[]>({
     queryKey: ["/api/recommendations/all"],
     queryFn: () => 
@@ -15,6 +22,39 @@ export default function AppliedRecommendations() {
 
   // Filter for applied (inactive) recommendations
   const appliedRecommendations = allRecommendations.filter(rec => !rec.isActive);
+
+  const reactivateMutation = useMutation({
+    mutationFn: async (id: number) => {
+      return apiRequest(`/api/recommendations/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ isActive: true }),
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/recommendations"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/recommendations/all"] });
+      toast({
+        title: "Recommendation Reactivated",
+        description: "The recommendation is now available again on the dashboard.",
+      });
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      return apiRequest(`/api/recommendations/${id}`, {
+        method: "DELETE",
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/recommendations"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/recommendations/all"] });
+      toast({
+        title: "Recommendation Deleted",
+        description: "The recommendation has been permanently removed.",
+      });
+    },
+  });
 
   const formatDate = (date: Date) => {
     return new Date(date).toLocaleDateString('en-US', {
@@ -114,7 +154,7 @@ export default function AppliedRecommendations() {
                         </div>
 
                         <div className="pt-3 border-t border-gray-200">
-                          <div className="flex items-center justify-between text-xs text-gray-500">
+                          <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
                             <div className="flex items-center space-x-1">
                               <TrendingUp className="w-3 h-3" />
                               <span>Score: {recommendation.score}/100</span>
@@ -123,6 +163,28 @@ export default function AppliedRecommendations() {
                               <Clock className="w-3 h-3" />
                               <span>{recommendation.timeSensitivity}</span>
                             </div>
+                          </div>
+                          
+                          <div className="flex space-x-2">
+                            <Button 
+                              onClick={() => reactivateMutation.mutate(recommendation.id)}
+                              disabled={reactivateMutation.isPending}
+                              variant="outline"
+                              size="sm"
+                              className="flex-1 text-blue-600 border-blue-200 hover:bg-blue-50"
+                            >
+                              <RotateCcw className="w-4 h-4 mr-1" />
+                              Reactivate
+                            </Button>
+                            <Button 
+                              onClick={() => deleteMutation.mutate(recommendation.id)}
+                              disabled={deleteMutation.isPending}
+                              variant="outline"
+                              size="sm"
+                              className="text-red-600 border-red-200 hover:bg-red-50"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
                           </div>
                         </div>
                       </div>
