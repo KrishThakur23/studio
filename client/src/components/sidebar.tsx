@@ -6,14 +6,17 @@ import {
   Settings,
   Activity
 } from "lucide-react";
+import { Link, useLocation } from "wouter";
 
 export default function Sidebar() {
+  const [location] = useLocation();
+  
   const menuItems = [
-    { icon: BarChart3, label: "Dashboard", active: true },
-    { icon: ShoppingCart, label: "Product Recommendations", active: false },
-    { icon: TrendingUp, label: "Analytics", active: false },
-    { icon: MapPin, label: "Store Layout", active: false },
-    { icon: Settings, label: "Settings", active: false },
+    { icon: BarChart3, label: "Dashboard", path: "/" },
+    { icon: ShoppingCart, label: "Product Recommendations", path: "/applied-recommendations" },
+    { icon: TrendingUp, label: "Analytics", path: "/analytics" },
+    { icon: MapPin, label: "Store Layout", path: "/store-layout" },
+    { icon: Settings, label: "Settings", path: "/settings" },
   ];
 
   return (
@@ -33,10 +36,10 @@ export default function Sidebar() {
         <div className="bg-walmart-blue-600 rounded-lg p-3 mb-2">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 bg-walmart-yellow-500 rounded-full flex items-center justify-center">
-              <span className="text-walmart-blue-500 font-semibold text-sm">JD</span>
+              <span className="text-walmart-blue-500 font-semibold text-sm">GP</span>
             </div>
             <div>
-              <p className="font-medium text-sm">John Doe</p>
+              <p className="font-medium text-sm">Gaurav Pawar</p>
               <p className="text-blue-200 text-xs">Store Manager</p>
             </div>
           </div>
@@ -46,19 +49,20 @@ export default function Sidebar() {
       <nav className="flex-1">
         {menuItems.map((item, index) => {
           const Icon = item.icon;
+          const isActive = location === item.path;
           return (
-            <a
+            <Link
               key={index}
-              href="#"
+              href={item.path}
               className={`flex items-center px-6 py-3 transition-colors ${
-                item.active
+                isActive
                   ? "text-white bg-walmart-blue-600 border-r-4 border-walmart-yellow-500"
                   : "text-blue-200 hover:text-white hover:bg-walmart-blue-600"
               }`}
             >
               <Icon className="w-5 h-5 mr-3" />
               {item.label}
-            </a>
+            </Link>
           );
         })}
       </nav>

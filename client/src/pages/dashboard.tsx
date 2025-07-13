@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import Sidebar from "@/components/sidebar";
 import EnvironmentalCards from "@/components/environmental-cards";
+import CurrentEvents from "@/components/current-events";
 import RecommendationCard from "@/components/recommendation-card";
 import AnalyticsCharts from "@/components/analytics-charts";
 import StoreLayout from "@/components/store-layout";
@@ -73,6 +74,9 @@ export default function Dashboard() {
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Current Environmental Conditions</h3>
             <EnvironmentalCards data={environmentalData} />
           </div>
+
+          {/* Current Events and Market Influencers */}
+          <CurrentEvents />
 
           {/* Smart Recommendations */}
           <div className="mb-8">

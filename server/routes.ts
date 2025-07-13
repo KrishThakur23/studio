@@ -47,6 +47,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/recommendations/all", async (req, res) => {
+    try {
+      const recommendations = await storage.getAllRecommendations();
+      res.json(recommendations);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch all recommendations" });
+    }
+  });
+
   app.post("/api/recommendations", async (req, res) => {
     try {
       const validatedData = insertRecommendationSchema.parse(req.body);

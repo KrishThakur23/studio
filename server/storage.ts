@@ -23,6 +23,7 @@ export interface IStorage {
   getEnvironmentalDataHistory(hours: number): Promise<EnvironmentalData[]>;
   
   getActiveRecommendations(): Promise<Recommendation[]>;
+  getAllRecommendations(): Promise<Recommendation[]>;
   createRecommendation(recommendation: InsertRecommendation): Promise<Recommendation>;
   updateRecommendation(id: number, updates: Partial<Recommendation>): Promise<Recommendation | undefined>;
   
@@ -226,6 +227,11 @@ export class MemStorage implements IStorage {
     return Array.from(this.recommendationsList.values())
       .filter(rec => rec.isActive)
       .sort((a, b) => b.score - a.score);
+  }
+
+  async getAllRecommendations(): Promise<Recommendation[]> {
+    return Array.from(this.recommendationsList.values())
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
 
   async createRecommendation(recommendation: InsertRecommendation): Promise<Recommendation> {
